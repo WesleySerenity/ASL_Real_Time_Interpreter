@@ -1,4 +1,4 @@
-# ASL Hand Gesture Recognition & Typing Web App
+# ASL Hand Gesture Recognition
 
 ## Overview
 
