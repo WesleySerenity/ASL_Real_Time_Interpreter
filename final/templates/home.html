@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Hand Gesture Detection</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #0b0b0b;
+      color: #f5f5f5;
+      font-family: Arial, sans-serif;
+
+      height: 100vh;
+      overflow: hidden;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      height: 90px;
+      min-height: 90px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-bottom: 1px solid #222;
+      background: #0a0a0a;
+
+      position: relative;
+      padding: 0 18px;
+    }
+
+    .header h1 {
+      font-size: 30px;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .nav-select {
+      position: absolute;
+      right: 18px;
+      top: 22px;
+
+      background: #111;
+      color: #fff;
+
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+
+      padding: 8px 10px;
+      font-size: 12px;
+
+      cursor: pointer;
+    }
+
+    .content {
+      display: flex;
+      height: calc(100vh - 90px);
+      width: 100vw;
+    }
+
+    .left,
+    .right {
+      width: 50vw;
+      height: 100%;
+      padding: 16px;
+    }
+
+    .left {
+      border-right: 1px solid #222;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      opacity: 0.7;
+      margin: 0 0 4px 2px;
+    }
+
+    .video-wrap {
+      flex: 1;
+
+      background: #0e0e0e;
+      border: 1px solid #222;
+      border-radius: 14px;
+
+      padding: 10px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+    }
+
+    img.video {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      border-radius: 10px;
+      display: block;
+    }
+
+    .right {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      background: #0f0f0f;
+    }
+
+    .right-title {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .hint-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 600;
+
+      border-radius: 10px;
+      border: 1px solid #2a2a2a;
+
+      cursor: pointer;
+
+      background: #1f6feb;
+      color: white;
+    }
+
+    .hint-panels {
+      flex: 1;
+
+      background: #0c0c0c;
+      border: 1px solid #222;
+      border-radius: 14px;
+
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    .panel {
+      display: none;
+      height: 100%;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      margin: 0 0 10px 0;
+      opacity: 0.9;
+    }
+
+    .panel img {
+      width: 100%;
+      height: auto;
+
+      max-height: 60vh;
+      object-fit: contain;
+
+      border-radius: 10px;
+      border: 1px solid #333;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <header class="header">
+
+    <h1>Hand Gesture Detection</h1>
+
+    <select class="nav-select" id="pageNav">
+      <option value="/" selected>Home (Detection)</option>
+      <option value="/practice">Practice Mode</option>
+      <option value="/typing">Typing Mode</option>
+    </select>
+
+  </header>
+
+
+  <main class="content">
+
+    <section class="left">
+
+      <p class="subtitle">
+        Live detection with model prediction + confidence.
+      </p>
+
+      <div class="video-wrap">
+        <img class="video" src="/video_feed_main" alt="Live video feed" />
+      </div>
+
+    </section>
+
+
+    <section class="right">
+
+      <h2 class="right-title">ASL Alphabet Reference</h2>
+
+      <div class="hint-controls">
+        <button id="btnAlphabet">Toggle Full Alphabet</button>
+      </div>
+
+      <div class="hint-panels">
+
+        <div id="alphabetPanel" class="panel">
+          <div class="panel-title">Full ASL Alphabet Chart</div>
+
+          <img
+            src="https://static.vecteezy.com/system/resources/previews/037/899/180/non_2x/dactylic-alphabet-asl-alphabet-illustration-vector.jpg"
+            alt="ASL Alphabet Chart"
+          />
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+    // navigation
+    const pageNavSelect = document.getElementById("pageNav");
+
+    pageNavSelect.addEventListener("change", () => {
+      window.location.href = pageNavSelect.value;
+    });
+
+
+    // alphabet
+    let isAlphabetVisible = false;
+
+    const alphabetPanelEl = document.getElementById("alphabetPanel");
+    const alphabetToggleBtn = document.getElementById("btnAlphabet");
+
+    alphabetToggleBtn.addEventListener("click", () => {
+      isAlphabetVisible = !isAlphabetVisible;
+
+      alphabetPanelEl.style.display = isAlphabetVisible ? "block" : "none";
+    });
+  </script>
+
+</body>
+</html>

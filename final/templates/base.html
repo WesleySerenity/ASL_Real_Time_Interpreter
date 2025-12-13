@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- basic page stuff -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>{% block title %}Hand Gesture App{% endblock %}</title>
+
+
+  <!-- global styles (shared across all pages) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+
+  {# page-specific css can drop in here #}
+  {% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+  {# main page content goes here #}
+  {% block content %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Hand Gesture Recognition Practice</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/practice.css') }}">
+
+</head>
+
+<body>
+
+  <!-- header -->
+  <header class="header">
+
+    <h1>Hand Gesture Recognition Practice</h1>
+
+    <!-- dropdown nav -->
+    <select class="nav-select" id="pageNav">
+      <option value="/">Home (Detection)</option>
+      <option value="/practice" selected>Practice Mode</option>
+      <option value="/typing">Typing Mode</option>
+    </select>
+
+  </header>
+
+
+
+  <!-- main layout -->
+  <main class="content">
+
+    <!-- left: camera -->
+    <section class="left">
+
+      <p class="subtitle">
+        Hold your sign steady longer to confirm. Press <b>S</b> to skip.
+      </p>
+
+      <div class="video-wrap">
+        <img class="video" src="/video_feed_practice" alt="Practice video feed" />
+      </div>
+
+    </section>
+
+
+
+    <!-- right: hints -->
+    <section class="right">
+
+      <h2 class="right-title">Hints</h2>
+
+      <div class="hint-controls">
+        <button id="btnAlphabet">Toggle Full Alphabet</button>
+        <button id="btnLetter" class="secondary">Toggle Current Letter</button>
+      </div>
+
+
+      <div class="hint-panels">
+
+        <!-- full alphabet chart -->
+        <div id="alphabetPanel" class="panel">
+          <div class="panel-title">Full ASL Alphabet Chart</div>
+          <img src="{{ chart_url }}" alt="ASL Alphabet Chart" />
+        </div>
+
+        <!-- current target sample from your data folder -->
+        <div id="letterPanel" class="panel">
+          <div class="panel-title">Target Letter Example</div>
+          <img id="letterHintImg" src="" alt="Current Letter Hint" />
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <script>
+    // navigation
+    const pageNavSelect = document.getElementById("pageNav");
+
+    pageNavSelect.addEventListener("change", () => {
+      window.location.href = pageNavSelect.value;
+    });
+
+
+
+    // hints
+    let isAlphabetVisible = false;
+    let isLetterVisible = false;
+
+    let lastTargetLetter = null;
+
+    const alphabetPanelEl = document.getElementById("alphabetPanel");
+    const letterPanelEl = document.getElementById("letterPanel");
+    const letterHintImgEl = document.getElementById("letterHintImg");
+
+
+
+    document.getElementById("btnAlphabet").addEventListener("click", () => {
+      isAlphabetVisible = !isAlphabetVisible;
+
+      alphabetPanelEl.style.display = isAlphabetVisible ? "block" : "none";
+    });
+
+
+
+    document.getElementById("btnLetter").addEventListener("click", () => {
+      isLetterVisible = !isLetterVisible;
+
+      if (isLetterVisible) {
+        // ts=... just busts browser cache
+        letterHintImgEl.src = "/letter_hint_image?ts=" + Date.now();
+        letterPanelEl.style.display = "block";
+
+        return;
+      }
+
+      letterPanelEl.style.display = "none";
+      letterHintImgEl.src = "";
+    });
+
+
+
+    // skip
+    document.addEventListener("keydown", async (event) => {
+      if (event.key !== "s" && event.key !== "S") return;
+
+      await fetch("/skip", { method: "POST" });
+
+      if (isLetterVisible) {
+        letterHintImgEl.src = "/letter_hint_image?ts=" + Date.now();
+      }
+    });
+
+
+
+    // state polling (updates hint image when the target letter changes)
+    async function pollState() {
+      try {
+        const response = await fetch("/state", { cache: "no-store" });
+        const stateData = await response.json();
+
+        const currentTarget = stateData.target_letter;
+
+        if (lastTargetLetter === null) {
+          lastTargetLetter = currentTarget;
+          return;
+        }
+
+        if (currentTarget !== lastTargetLetter) {
+          lastTargetLetter = currentTarget;
+
+          if (isLetterVisible) {
+            letterHintImgEl.src = "/letter_hint_image?ts=" + Date.now();
+          }
+        }
+      } catch (err) {
+        // ignore fetch errors (usually happens during reload)
+      }
+    }
+
+    setInterval(pollState, 350);
+  </script>
+
+</body>
+</html>

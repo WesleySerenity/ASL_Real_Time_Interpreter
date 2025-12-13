@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>ASL Typing Mode</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+
+      background: #0b0b0b;
+      color: #f5f5f5;
+
+      font-family: Arial, sans-serif;
+
+      height: 100vh;
+      overflow: hidden;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    .header {
+      height: 90px;
+      min-height: 90px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-bottom: 1px solid #222;
+      background: #0a0a0a;
+
+      position: relative;
+      padding: 0 18px;
+    }
+
+    .header h1 {
+      font-size: 30px;
+      font-weight: 700;
+
+      margin: 0;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .nav-select {
+      position: absolute;
+      right: 18px;
+      top: 22px;
+
+      background: #111;
+      color: #fff;
+
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+
+      padding: 8px 10px;
+      font-size: 12px;
+
+      cursor: pointer;
+    }
+
+
+    .content {
+      display: flex;
+      height: calc(100vh - 90px);
+      width: 100vw;
+    }
+
+    .left,
+    .right {
+      width: 50vw;
+      height: 100%;
+      padding: 16px;
+    }
+
+
+    .left {
+      border-right: 1px solid #222;
+
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      opacity: 0.7;
+      margin: 0 0 4px 2px;
+    }
+
+    .video-wrap {
+      flex: 2;
+
+      background: #0e0e0e;
+      border: 1px solid #222;
+      border-radius: 14px;
+
+      padding: 10px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+    }
+
+    img.video {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      border-radius: 10px;
+      display: block;
+    }
+
+
+    .typing-panel {
+      flex: 1;
+
+      margin-top: 6px;
+      background: #0e0e0e;
+
+      border: 1px solid #222;
+      border-radius: 14px;
+
+      padding: 10px 12px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .typing-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .typing-header span {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .typing-clear-btn {
+      padding: 6px 10px;
+
+      font-size: 12px;
+      border-radius: 8px;
+
+      border: 1px solid #2a2a2a;
+      background: #c0392b;
+
+      color: #fff;
+      cursor: pointer;
+    }
+
+
+    .typing-box {
+      flex: 1;
+
+      background: #111;
+      border-radius: 10px;
+
+      padding: 10px 12px;
+      overflow-y: auto;
+
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      min-width: 22px;
+    }
+
+    .slot-letter {
+      font-size: 22px;
+      min-height: 26px;
+
+      font-family: "Courier New", monospace;
+    }
+
+    .slot-underline {
+      width: 22px;
+      border-bottom: 2px solid #f5f5f5;
+      margin-top: 4px;
+    }
+
+
+    .right {
+      display: flex;
+      flex-direction: column;
+
+      gap: 12px;
+      background: #0f0f0f;
+    }
+
+    .right-title {
+      font-size: 20px;
+      margin: 0 0 4px 0;
+    }
+
+    .right-inner {
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+
+    .alphabet-section {
+      flex: 1;
+
+      background: #0c0c0c;
+      border-radius: 14px;
+      border: 1px solid #222;
+
+      padding: 10px 12px;
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hint-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .hint-toggle-btn {
+      flex: 1;
+
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 600;
+
+      border-radius: 10px;
+      border: 1px solid #2a2a2a;
+
+      cursor: pointer;
+
+      background: #1f6feb;
+      color: white;
+    }
+
+    .alphabet-panel {
+      flex: 1;
+      display: none;
+      margin-top: 4px;
+    }
+
+    .alphabet-panel-title {
+      font-size: 14px;
+      margin: 0 0 8px 0;
+      opacity: 0.9;
+    }
+
+    .alphabet-panel img {
+      width: 100%;
+      height: auto;
+
+      max-height: 60vh;
+      object-fit: contain;
+
+      border-radius: 10px;
+      border: 1px solid #333;
+    }
+
+
+    .bottom-hints {
+      flex: 1;
+
+      background: #0c0c0c;
+      border-radius: 14px;
+      border: 1px solid #222;
+
+      padding: 10px 12px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bottom-title {
+      font-size: 16px;
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .space-delete-grid {
+      flex: 1;
+
+      display: flex;
+      gap: 10px;
+
+      margin-top: 6px;
+    }
+
+    .mini-card {
+      flex: 1;
+
+      background: #111;
+      border-radius: 12px;
+      border: 1px solid #333;
+
+      padding: 8px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      align-items: center;
+    }
+
+    .mini-label {
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    .mini-card img {
+      width: 100%;
+      height: auto;
+
+      max-height: 28vh;
+      object-fit: contain;
+
+      border-radius: 8px;
+    }
+
+    .mini-text {
+      font-size: 12px;
+      opacity: 0.85;
+      text-align: center;
+      line-height: 1.4;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <header class="header">
+
+    <h1>ASL Typing Mode</h1>
+
+    <select class="nav-select" id="pageNav">
+      <option value="/">Home (Detection)</option>
+      <option value="/practice">Practice Mode</option>
+      <option value="/typing" selected>Typing Mode</option>
+    </select>
+
+  </header>
+
+
+
+  <main class="content">
+
+    <section class="left">
+
+      <p class="subtitle">
+        Hold a sign to type letters. Use your <b>space</b> and <b>delete</b> signs to control spacing.
+      </p>
+
+      <div class="video-wrap">
+        <img class="video" src="/video_feed_typing" alt="Typing video feed" />
+      </div>
+
+
+      <div class="typing-panel">
+
+        <div class="typing-header">
+          <span>Typed text (from ASL signs)</span>
+          <button class="typing-clear-btn" id="clearBtn">Clear</button>
+        </div>
+
+        <div class="typing-box" id="typedText"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <section class="right">
+
+      <h2 class="right-title">Hints</h2>
+
+      <div class="right-inner">
+
+        <div class="alphabet-section">
+
+          <div class="hint-controls">
+            <button class="hint-toggle-btn" id="btnAlphabet">
+              Toggle Full Alphabet
+            </button>
+          </div>
+
+          <div class="alphabet-panel" id="alphabetPanel">
+            <p class="alphabet-panel-title">ASL Alphabet Chart</p>
+
+            <img
+              src="{{ chart_url }}"
+              alt="ASL Alphabet Chart"
+            />
+          </div>
+
+        </div>
+
+
+        <div class="bottom-hints">
+
+          <h3 class="bottom-title">Space & Delete Examples</h3>
+
+          <div class="space-delete-grid">
+
+            <div class="mini-card">
+              <div class="mini-label">Space sign</div>
+
+              <img
+                id="spaceImg"
+                src="/hint_image/space"
+                alt="Space sign example"
+              />
+            </div>
+
+
+            <div class="mini-card">
+              <div class="mini-label">Delete sign</div>
+
+              <img
+                id="deleteImg"
+                src="/hint_image/delete"
+                alt="Delete sign example"
+              />
+
+              <div class="mini-text">
+                When the model predicts <b>del</b>, the last character
+                in the typed text will be removed.
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <script>
+    // navigation
+    const pageNavSelect = document.getElementById("pageNav");
+
+    pageNavSelect.addEventListener("change", () => {
+      window.location.href = pageNavSelect.value;
+    });
+
+
+
+    // alphabet
+    let isAlphabetVisible = false;
+
+    const alphabetPanelEl = document.getElementById("alphabetPanel");
+    const alphabetToggleBtn = document.getElementById("btnAlphabet");
+
+    alphabetToggleBtn.addEventListener("click", () => {
+      isAlphabetVisible = !isAlphabetVisible;
+
+      alphabetPanelEl.style.display = isAlphabetVisible ? "block" : "none";
+    });
+
+
+
+    // text rendering
+    function renderSlots(rawText) {
+      const slotContainerEl = document.getElementById("typedText");
+      slotContainerEl.innerHTML = "";
+
+      if (!rawText || rawText.length === 0) return;
+
+
+      for (const ch of rawText) {
+        const slotEl = document.createElement("div");
+        slotEl.className = "slot";
+
+        const letterEl = document.createElement("div");
+        letterEl.className = "slot-letter";
+
+        // spaces show an underline, but no letter above it
+        letterEl.textContent = (ch === " ") ? "" : ch;
+
+        const underlineEl = document.createElement("div");
+        underlineEl.className = "slot-underline";
+
+
+        slotEl.appendChild(letterEl);
+        slotEl.appendChild(underlineEl);
+
+        slotContainerEl.appendChild(slotEl);
+      }
+    }
+
+
+
+    // typed text polling
+    async function pollTypedText() {
+      try {
+        const response = await fetch("/typing_state", { cache: "no-store" });
+        const payload = await response.json();
+
+        const rawText = payload.text || "";
+        renderSlots(rawText);
+      } catch (err) {
+        // ignore errors quietly (usually refresh / reload stuff)
+      }
+    }
+
+    setInterval(pollTypedText, 300);
+
+
+
+    // clear
+    document.getElementById("clearBtn").addEventListener("click", async () => {
+      await fetch("/typing_clear", { method: "POST" });
+
+      document.getElementById("typedText").innerHTML = "";
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #0b0b0b;
+  color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------- HEADER ---------------- */
+.header {
+  height: 90px;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #222;
+  background: #0a0a0a;
+  position: relative;
+  padding: 0 18px;
+}
+
+.header h1 {
+  font-size: 34px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* Dropdown on top right */
+.nav-select {
+  position: absolute;
+  right: 18px;
+  top: 22px;
+  background: #111;
+  color: #fff;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ---------------- MAIN SPLIT ---------------- */
+.content {
+  display: flex;
+  height: calc(100vh - 90px);
+  width: 100vw;
+}
+
+/* Left + Right halves */
+.left, .right {
+  width: 50vw;
+  height: 100%;
+  padding: 16px;
+}
+
+.left {
+  border-right: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+  margin: 0 0 4px 2px;
+}
+
+/* ---------------- CAMERA ---------------- */
+.video-wrap {
+  flex: 1;
+  background: #0e0e0e;
+  border: 1px solid #222;
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+img.video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+}
+
+/* ---------------- RIGHT SIDE ---------------- */
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #0f0f0f;
+}
+
+.right-title {
+  font-size: 20px;
+  margin: 0;
+}
+
+/* Buttons row */
+.hint-controls {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  flex: 1;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1px solid #2a2a2a;
+  cursor: pointer;
+  background: #1f6feb;
+  color: white;
+}
+
+button.secondary {
+  background: #f0c040;
+  color: #111;
+}
+
+/* Hint container */
+.hint-panels {
+  flex: 1;
+  background: #0c0c0c;
+  border: 1px solid #222;
+  border-radius: 14px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+/* Each panel hidden by default */
+.panel {
+  display: none;
+  height: 100%;
+}
+
+.panel-title {
+  font-size: 16px;
+  margin: 0 0 10px 0;
+  opacity: 0.9;
+}
+
+/* ✅ Make hint images slightly smaller so no scrolling */
+.panel img {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
