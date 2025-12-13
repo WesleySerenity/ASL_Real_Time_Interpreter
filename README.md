@@ -23,11 +23,8 @@ The system uses a **neutral reset** logic so you can type repeated letters (e.g.
   👉 _Add your video link here_ (e.g., YouTube or Google Drive)
 
 - **GitHub repository:**  
-  👉 This README belongs to this repository (your current URL).
+  👉 This README belongs to this repository https://github.com/WesleySerenity/ASL_Real_Time_Interpreter/edit/main/README.md.
 
-If required for submission, you can also download this repository as a `.zip` and submit that archive.
-
----
 
 ## Features
 
@@ -42,7 +39,7 @@ If required for submission, you can also download this repository as a `.zip` an
 - UI displays:
   - `Target: <LETTER>`
   - `Score: <number>`
-  - A feedback box: “✅ CORRECT (R)” or “❌ INCORRECT (T)”
+  - A feedback box: “CORRECT (R)” or “INCORRECT (T)”
 - User holds the sign for the target letter.
 - A debouncing mechanism ensures:
   - **One stable sign = one attempt**
