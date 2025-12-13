@@ -19,7 +19,7 @@ The system uses a **neutral reset** logic so you can type repeated letters (e.g.
 
 ## Demo & Repository
 
-- **Demo video (1 minute):**  
+- **Demo:**  
   👉 _Add your video link here https://youtube.com/shorts/6UrRQqUhYX8?si=oXMGQYKn2XNxhBbd
 
 - **GitHub repository:**  
