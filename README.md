@@ -20,7 +20,7 @@ The system uses a **neutral reset** logic so you can type repeated letters (e.g.
 ## Demo & Repository
 
 - **Demo video (1 minute):**  
-  👉 _Add your video link here_ (e.g., YouTube or Google Drive)
+  👉 _Add your video link here https://youtube.com/shorts/6UrRQqUhYX8?si=oXMGQYKn2XNxhBbd
 
 - **GitHub repository:**  
   👉 This README belongs to this repository https://github.com/WesleySerenity/ASL_Real_Time_Interpreter/edit/main/README.md.
